@@ -24,9 +24,11 @@ class EmployeeResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('organization_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('organization_id')
+                    ->relationship('organization', titleAttribute: 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Forms\Components\TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
@@ -34,6 +36,8 @@ class EmployeeResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('date_of_birth')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
                     ->required(),
                 Forms\Components\TextInput::make('adress')
                     ->required()
@@ -45,6 +49,8 @@ class EmployeeResource extends Resource
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('hire_date')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
                     ->required(),
             ]);
     }
@@ -53,7 +59,7 @@ class EmployeeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('organization_id')
+                Tables\Columns\TextColumn::make('organization.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('first_name')
@@ -86,6 +92,7 @@ class EmployeeResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

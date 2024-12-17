@@ -28,11 +28,13 @@ class OrganizationResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('established_date')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
                     ->required(),
                 Forms\Components\TextInput::make('industry')
                     ->required()
                     ->maxLength(255),
-            ]);
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -59,6 +61,7 @@ class OrganizationResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
